@@ -31,7 +31,15 @@ app.delete('/api/resource/:id', deleteBlog);
 
 
 
-app.put('/api/resource/:id',UpdateUsers);
+app.put('/:userId', async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
+      if (!user) throw new Error('User not found');
+      res.status(200).json({ user });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
 
 
 app.listen(5000, () => {
